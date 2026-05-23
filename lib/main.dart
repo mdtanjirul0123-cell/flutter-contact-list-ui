@@ -5,219 +5,205 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Contact List',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
+        primarySwatch: Colors.blueGrey,
       ),
       home: const ContactListScreen(),
     );
   }
 }
 
-class Contact {
-  final String id;
-  final String name;
-  final String phone;
-  final String email;
-  final String avatarLetter;
-
-  Contact({
-    required this.id,
-    required this.name,
-    required this.phone,
-    required this.email,
-  }) : avatarLetter = name.isNotEmpty ? name[0].toUpperCase() : '?';
-}
-
-class ContactListScreen extends StatefulWidget {
-  const ContactListScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ContactListScreen> createState() => _ContactListScreenState();
-}
-
-class _ContactListScreenState extends State<ContactListScreen> {
-  final List<Contact> contacts = [
-    Contact(
-      id: '1',
-      name: 'John Doe',
-      phone: '+1 234-567-8900',
-      email: 'john.doe@example.com',
-    ),
-    Contact(
-      id: '2',
-      name: 'Jane Smith',
-      phone: '+1 234-567-8901',
-      email: 'jane.smith@example.com',
-    ),
-    Contact(
-      id: '3',
-      name: 'Michael Johnson',
-      phone: '+1 234-567-8902',
-      email: 'michael.johnson@example.com',
-    ),
-    Contact(
-      id: '4',
-      name: 'Emily Williams',
-      phone: '+1 234-567-8903',
-      email: 'emily.williams@example.com',
-    ),
-    Contact(
-      id: '5',
-      name: 'David Brown',
-      phone: '+1 234-567-8904',
-      email: 'david.brown@example.com',
-    ),
-  ];
-
-  void _showAddContactDialog() {
-    final nameController = TextEditingController();
-    final phoneController = TextEditingController();
-    final emailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Contact'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone'),
-            ),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              if (nameController.text.isNotEmpty &&
-                  phoneController.text.isNotEmpty &&
-                  emailController.text.isNotEmpty) {
-                setState(() {
-                  contacts.add(Contact(
-                    id: DateTime.now().toString(),
-                    name: nameController.text,
-                    phone: phoneController.text,
-                    email: emailController.text,
-                  ));
-                });
-                Navigator.pop(context);
-              }
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
+class ContactListScreen extends StatelessWidget {
+  const ContactListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    List<Map<String, String>> contacts = [
+
+      {
+        "name": "Tanjirul",
+        "phone": "01877-777777",
+      },
+
+      {
+        "name": "Ferdous",
+        "phone": "01673-777777",
+      },
+
+      {
+        "name": "Hasan",
+        "phone": "01745-777777",
+      },
+
+      {
+        "name": "Hasan",
+        "phone": "01745-777777",
+      },
+
+      {
+        "name": "Hasan",
+        "phone": "01745-777777",
+      },
+    ];
+
     return Scaffold(
+
       appBar: AppBar(
-        title: const Text('Contacts'),
-        elevation: 0,
-      ),
-      body: ListView.builder(
-        itemCount: contacts.length,
-        itemBuilder: (context, index) {
-          final contact = contacts[index];
-          return ContactCard(
-            contact: contact,
-            onDelete: () {
-              setState(() {
-                contacts.removeAt(index);
-              });
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddContactDialog,
-        tooltip: 'Add Contact',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
+        centerTitle: true,
 
-class ContactCard extends StatefulWidget {
-  final Contact contact;
-  final VoidCallback onDelete;
+        backgroundColor: Colors.blueGrey,
 
-  const ContactCard({
-    Key? key,
-    required this.contact,
-    required this.onDelete,
-  }) : super(key: key);
+        title: const Text(
+          "Contact List",
 
-  @override
-  State<ContactCard> createState() => _ContactCardState();
-}
-
-class _ContactCardState extends State<ContactCard> {
-  bool _showEmail = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.blue,
-          child: Text(
-            widget.contact.avatarLetter,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        title: Text(widget.contact.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+
+      body: Padding(
+
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
           children: [
-            const SizedBox(height: 4),
-            Text(widget.contact.phone),
-            if (_showEmail)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  widget.contact.email,
-                  style: const TextStyle(color: Colors.blue),
+
+            // Name Field
+            TextFormField(
+
+              decoration: InputDecoration(
+
+                hintText: "Hasan",
+
+                border: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(6),
                 ),
               ),
-          ],
-        ),
-        trailing: PopupMenuButton(
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              child: const Text('Delete'),
-              onTap: widget.onDelete,
+            ),
+
+            const SizedBox(height: 16),
+
+            // Phone Field
+            TextFormField(
+
+              keyboardType:
+                  TextInputType.phone,
+
+              decoration: InputDecoration(
+
+                hintText: "01745-777777",
+
+                border: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(6),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Add Button
+            SizedBox(
+
+              width: double.infinity,
+              height: 50,
+
+              child: ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Colors.blueGrey,
+                ),
+
+                onPressed: () {},
+
+                child: const Text(
+                  "Add",
+
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Contact List
+            Expanded(
+
+              child: ListView.builder(
+
+                itemCount: contacts.length,
+
+                itemBuilder: (context, index) {
+
+                  final contact = contacts[index];
+
+                  return Card(
+
+                    elevation: 2,
+
+                    margin:
+                        const EdgeInsets.only(
+                      bottom: 12,
+                    ),
+
+                    child: ListTile(
+
+                      contentPadding:
+                          const EdgeInsets.all(12),
+
+                      leading: const Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.brown,
+                      ),
+
+                      title: Text(
+                        contact["name"]!,
+
+                        style: const TextStyle(
+                          fontSize: 28,
+                          color: Colors.red,
+                          fontWeight:
+                              FontWeight.w500,
+                        ),
+                      ),
+
+                      subtitle: Text(
+                        contact["phone"]!,
+
+                        style: const TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+
+                      trailing: const Icon(
+                        Icons.phone,
+                        color: Colors.blue,
+                        size: 36,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
-        onTap: () {
-          setState(() {
-            _showEmail = !_showEmail;
-          });
-        },
       ),
     );
   }
